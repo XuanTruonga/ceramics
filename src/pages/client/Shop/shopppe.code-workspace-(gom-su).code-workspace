@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "../../../../../../HTML-CSS/shopppe"
+		},
+		{
+			"path": "../../../../../../library/JSON server"
+		},
+		{
+			"path": "../../../../.."
+		},
+		{
+			"path": "../../../../../../react-wedpack"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "react-wedpack"
+	}
+}
