@@ -1,8 +1,10 @@
 import { axiosInstance } from "./services";
 
-export const apiGetUsers = async () => {
+export const apiGetUsers = async (option={}) => {
   try {
-    const res = await axiosInstance.get('/auth');
+    const res = await axiosInstance.get('/auth',{
+      params:option
+    });
     return res.data;
   } catch (error) {
     console.log(error);
@@ -10,42 +12,27 @@ export const apiGetUsers = async () => {
 };
 
 export const apiGetUsersCurrent = async () => {
-  try {
     const res = await axiosInstance.get('/auth/verify-token');
     return res.data;
-  } catch (error) {
-    console.log(error);
-  }
+
 };
 
 export const apiRegisterUser = async (post) => {
-  try {
     const res = await axiosInstance.post('/auth/register',post);
     return res.data;
-  } catch (error) {
-    console.log(error.response.data);
-  }
 };
 
-export const apiDeleteUsers = async (id)=>{
-  try {
-  const res = await axiosInstance.delete(`/auth`,id)
+export const apiLockUsers = async (id,data)=>{
+  const res = await axiosInstance.put(`/auth/lock/${id}`,data)
   return res
-} catch (error) {
-  console.log(error)
-}
 }
 
 export const apiLoginUsers = async (post={})=>{
-  try {
     const res = await axiosInstance.post('/auth/login',post)
     return res
-  } catch (error) {
-    console.log(error.response.data.message)
-  }
 }
 
-export const apiLockUsers = async (id,post)=>{
-  const res = await axiosInstance.put(`/auth/lock/${id}`,post)
+export const apiUpdateUsers = async (id,post)=>{
+  const res = await axiosInstance.put(`/auth/update/${id}`,post)
   return res
 }

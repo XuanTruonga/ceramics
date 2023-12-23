@@ -2,34 +2,25 @@
 /* eslint-disable jsx-a11y/alt-text */
 import { AdminIcon, CategoryIcon } from 'components/Icon/Icon';
 import { Link } from 'react-router-dom';
-import {  useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 
 import NavCart from './components/NavCart/NavCart';
 import NavHeart from './components/NavHeart/NavHeart';
 import PopperCategory from './components/PopperProduct';
 import NavSearch from './components/NavSearch/NavSearch';
 import SearchMode from './components/SearchMode/SearchMode';
-import { apiGetUsersCurrent } from 'Services/apiUser';
+import { AuthContext } from 'UseContext/AuthContext';
 
 function Header() {
   const [modeSearch, setModeSearch] = useState(false);
-  const [user, setUser] = useState({});
-  const dataUser = JSON.parse(localStorage.getItem('user')) || {};
+  const authContext = useContext(AuthContext);
 
-  useEffect(() => {
-    const userLogged = async () => {
-      const res = await apiGetUsersCurrent();
-      setUser(res.data);
-    };
-    userLogged();
-  }, []);
+  const { user, isAuthenticated } = authContext;
 
-  const handleoutAccount = ()=>{
-    localStorage.setItem(
-      'user',
-      JSON.stringify({ token: '', isAuthenticated: false })
-    );
-  }
+  const handleoutAccount = () => {
+    localStorage.setItem('token', JSON.stringify({ token: '', isAuthenticated: false }));
+  };
+
   return (
     <div className='header z-10 left-0 top-0 right-0  flex_center height-search text-base lg:absolute'>
       <div className='container '>
@@ -84,8 +75,8 @@ function Header() {
                 <div
                   className='nav_Admin-before hover-output p-2 text-[0.9rem] min-w-[130px] rounded text-black
                   top-[113%] right-[2px] shadow-md bg-white font-semibold smooth'>
-                    {console.log(dataUser)}
-                  {dataUser.isAuthenticated ? (
+
+                  {isAuthenticated ? (
                     <div className='w-full p-[5px_8px] block hover:text-primary text-base transition whitespace-nowrap'>
                       <div className='flex items-center gap-2'>
                         <img src={user.img}></img>
@@ -111,11 +102,14 @@ function Header() {
                     className='hover:text-primary w-full block text-base p-[5px_8px] transition'>
                     Quản trị
                   </Link>
-                  {dataUser.isAuthenticated ? (
-                    <a href='/' onClick={handleoutAccount} className='hover:text-primary w-full block text-base p-[5px_8px] transition'>
+                  {isAuthenticated ? (
+                    <a
+                      href='/'
+                      onClick={handleoutAccount}
+                      className='hover:text-primary w-full block text-base p-[5px_8px] transition'>
                       Đăng xuất
                     </a>
-                  ):null}
+                  ) : null}
                 </div>
               </div>
               <NavHeart />

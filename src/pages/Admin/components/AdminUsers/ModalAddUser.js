@@ -2,32 +2,39 @@
 /* eslint-disable jsx-a11y/alt-text */
 import { yupResolver } from '@hookform/resolvers/yup';
 import InputField from 'components/Form/InputField/InputField';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
-const ModalAddUser = ({ toggleModal, setToggleModal,onSubmitUser,btn='Thêm danh mục' }) => {
+const ModalAddUser = ({ toggleModal, setToggleModal,errorMessage, onSubmitUser, btn = 'Thêm danh mục' }) => {
   const modalInner = useRef();
+
   const schema = yup.object({
-    firstName: yup.string().min(2, 'tối thiểu 2 ký tự').trim(),
-    lastName:yup.string().min(2, 'tối thiểu 2 ký tự').trim(),
-    email:yup.string().required('không để trống').email('trường này phải là email').trim(),
-    telephone: yup.string().matches(/^\d+$/,'trường này phải là số').min(10,'tối thiểu 10 số').trim(),
-    password:yup.string().matches(/(?=.*?[0-9])(?=.*?[az])/,'phải có chữ cái và số',).min(6,'tối thiểu 6 ký tự').trim(),
-    img: yup.string().trim()
+    email: yup.string().required('vui lòng không để trống').email('trường này phải là email').trim(),
+    password: yup
+      .string()
+      .required('vui lòng không để trống')
+      .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, 'Từ 8 ký tự và cả số')
+      .trim(),
+    // confirmPassword: yup.string().required('vui lòng không để trống').min(6, 'tối thiểu 6 ký tự').trim(),
+    username: yup.string().required('vui lòng không để trống').trim(),
+    telephone: yup.string().matches(/^\d+$/, 'Trường này phải là số').trim().min(10, 'số điện thoại không hợp lệ'),
+    address: yup.string().min(6, 'từ 6 ký tự').trim()
   });
 
-  const { handleSubmit, control,reset,formState:{isSubmitSuccessful},setFocus } = useForm({
+  const {
+    handleSubmit,
+    control,
+    reset,
+    setFocus
+  } = useForm({
     resolver: yupResolver(schema)
   });
-  
-  useEffect(()=>{
-    reset()
-  },[isSubmitSuccessful])
 
   useEffect(() => {
-    setFocus("name")
-  }, [toggleModal])
+    setFocus('username');
+    reset()
+  }, [toggleModal]);
 
   const handleToggleModal = (e) => {
     if (e.target === modalInner.current.parentNode) {
@@ -45,23 +52,15 @@ const ModalAddUser = ({ toggleModal, setToggleModal,onSubmitUser,btn='Thêm danh
          transform: translate-y-[-50%] p-[20px_50px] rounded'>
             <form onSubmit={handleSubmit(onSubmitUser)}>
               <label className='text-sm font-medium mb-2 block'>
-                Họ:
+                Tên tài khoản:
                 <InputField
                   className=' border w-full rounded p-[8px_12px]'
-                  name='firstName'
-                  placeholder='Họ'
+                  name='username'
+                  placeholder='userName'
                   control={control}
                 />
               </label>
-              <label className='text-sm font-medium mb-2 block'>
-                Tên:
-                <InputField
-                  className=' border w-full rounded p-[8px_12px]'
-                  name='lastName'
-                  placeholder='Tên'
-                  control={control}
-                />
-              </label>
+
               <label className='text-sm font-medium mb-2 block'>
                 email:
                 <InputField
@@ -89,19 +88,20 @@ const ModalAddUser = ({ toggleModal, setToggleModal,onSubmitUser,btn='Thêm danh
                   control={control}
                 />
               </label>
-              <label className='text-sm font-medium mb-1 block cursor-pointer'>
-                Chọn avatar:
+              <label className='text-sm font-medium mb-2 block'>
+                số điện thoại:
                 <InputField
-                  className='cursor-pointer'
-                  name='img'
-                  // type='file'
+                  className=' border w-full rounded p-[8px_12px]'
+                  name='address'
+                  placeholder='địa chỉ'
                   control={control}
                 />
               </label>
-              <div className='flex m-auto w-[60%] h-[100px] mb-3 border flex_center rounded overflow-hidden'>
-                <img src=''></img>
-              </div>
-              <button className='button-add-product w-full'>Thêm người dùng</button>
+
+              {errorMessage && (
+                <span className='mt-1 inline-block text-sm text-red'>{errorMessage}</span>
+              )}
+              <button className='button-add-product w-full mt-7'>Thêm người dùng</button>
             </form>
           </div>
         </div>

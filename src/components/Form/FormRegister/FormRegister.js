@@ -1,5 +1,5 @@
 import { EyesOffIcon, EyesOnIcon, FaceBookIcon, GoogleIcon } from 'components/Icon/Icon';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import InputField from '../InputField/InputField';
@@ -10,8 +10,9 @@ import { toast } from 'react-toastify';
 
 function FormRegister() {
   const [viewPassword, setViewPassword] = useState(true);
-  const [user,setUser] = useState(true)
-  const [registerSuccess,SetRegisterSuccess] = useState(null)
+  const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
+
   // const [viewConfirmPassword, setViewConfirmPassword] = useState(true);
   const schema = yup.object({
     email: yup.string().required('vui lòng không để trống').email('trường này phải là email').trim(),
@@ -23,31 +24,27 @@ function FormRegister() {
     // confirmPassword: yup.string().required('vui lòng không để trống').min(6, 'tối thiểu 6 ký tự').trim(),
     username: yup.string().required('vui lòng không để trống').trim(),
     telephone: yup.string().matches(/^\d+$/, 'Trường này phải là số').trim().min(10, 'số điện thoại không hợp lệ'),
-    address: yup.string().min(6,'từ 6 ký tự').trim()
+    address: yup.string().min(6, 'từ 6 ký tự').trim()
   });
-  const { handleSubmit, control,setFocus } = useForm({
+  const { handleSubmit, control, setFocus } = useForm({
     resolver: yupResolver(schema)
   });
 
-  useEffect(()=>{
-    setFocus('username')
-  },[setFocus])
+  useEffect(() => {
+    setFocus('username');
+  }, [setFocus]);
 
   // submit form
-  const onSubmit = (value) => {
-    const apiRegisterAccount = async()=>{
-      const res = await apiRegisterUser(value);
-      if(!res){
-        setUser(false)
-      }else{
-        SetRegisterSuccess(true)
-        toast.success("Đăng ký thành công !", {
+  const onSubmit = async (data) => {
+    try {
+      await apiRegisterUser(data);
+      navigate('/dang-nhap');
+          toast.success('Đăng ký thành công !', {
           position: toast.POSITION.TOP_RIGHT
         });
-      }
-       
+    } catch (error) {
+      setErrorMessage(error.response.data?.message?.email || error.response.data?.message?.username ||'');
     }
-    apiRegisterAccount()
   };
   return (
     <div className='flex justify-center text-center '>
@@ -100,7 +97,7 @@ function FormRegister() {
           </div>
           <div className='rounded-md mt-3 relative'>
             <InputField
-            type={viewPassword ? 'password' : null}
+              type={viewPassword ? 'password' : null}
               control={control}
               placeholder='Mật khẩu'
               className='outline-none b-b-primary rounded p-[8px_10px] w-full'
@@ -113,7 +110,7 @@ function FormRegister() {
               {viewPassword ? <EyesOffIcon /> : <EyesOnIcon />}
             </div>
           </div>
-          {!user && <span className='text-sm text-red'>đăng ký ko thành công</span>}
+          {<span className='text-sm text-red'>{errorMessage}</span>}
           {/* <div className='rounded-md mt-3 relative'>
             <InputField
               type={viewConfirmPassword ? 'password' : null}
@@ -152,7 +149,6 @@ function FormRegister() {
           </div>
         </div>
       </div>
-      {registerSuccess && <Navigate to='/dang-nhap'/>} 
     </div>
   );
 }

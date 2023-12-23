@@ -1,24 +1,28 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { EyesOffIcon, EyesOnIcon, FaceBookIcon, GoogleIcon } from 'components/Icon/Icon';
 import { useForm } from 'react-hook-form';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import InputField from '../InputField/InputField';
-import {  useState } from 'react';
+import { useState } from 'react';
 import { apiLoginUsers } from 'Services/apiUser';
+import { useContext } from 'react';
+import { AuthContext } from 'UseContext/AuthContext';
 
 function FormLogin() {
   const [viewPassword, setViewPassword] = useState(true);
   const [account, setAccount] = useState(false);
-  const [user, setUser] = useState(false);
+  const navigate = useNavigate();
+  const authContext = useContext(AuthContext);
 
   const schema = yup.object({
-    username: yup.string().required('tk ko hợp lệ'),
+    username: yup.string().required('tài khoản ko hợp lệ'),
     password: yup.string().required('vui lòng không để trống').trim()
   });
   const { handleSubmit, control, setValue } = useForm({
     resolver: yupResolver(schema)
   });
+  console.log(authContext);
 
   const onSubmit = (value) => {
     const post = {
@@ -27,15 +31,11 @@ function FormLogin() {
     };
     if (value) {
       const getApiAdmin = async () => {
-        const res = await apiLoginUsers(post);
-        console.log(res.data)
-        if (res) {
-          setUser(true);
-          localStorage.setItem(
-            'user',
-            JSON.stringify({ token: res.data.token, isAuthenticated: true })
-          );
-        } else {
+        try {
+          const res = await apiLoginUsers(post);
+          authContext.login(res.data);
+          navigate('/');
+        } catch (error) {
           setAccount(true);
           setValue('username', '');
           setValue('password', '');
@@ -113,7 +113,6 @@ function FormLogin() {
           </div>
         </div>
       </div>
-      {user && <Navigate to='/' replace={true} />}
     </div>
   );
 }

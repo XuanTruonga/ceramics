@@ -4,14 +4,25 @@ import { useState } from 'react';
 // import { toast } from 'react-toastify';
 import ModalFixUser from './ModalFixUser';
 import ModalAddUser from './ModalAddUser';
-import { apiDeleteUsers } from 'Services/apiUser';
+import { apiLockUsers } from 'Services/apiUser';
+import { toast } from 'react-toastify';
 
-const TableCateAdmin = ({ apiUser, toggleModal, setToggleModal, onSubmitUser, setValueForm }) => {
+const TableCateAdmin = ({ apiUser, toggleModal, setToggleModal, onSubmitUser, setCallApiUser,errorMessage }) => {
   const [toggleFixUser, settoggleFixUser] = useState(false);
   const [itemFixUser, setItemFixUser] = useState({});
 
-  const handleDeleteUser = async (item) => {
-    await apiDeleteUsers(item._id);
+  const handleLockUser = async (item) => {
+    try {
+    await apiLockUsers(item._id,{ is_locked: true});
+      toast.success('Khóa tài khoản thành công!',{
+        position:toast.POSITION.TOP_RIGHT
+      })
+      setCallApiUser(item)
+    } catch (error) {
+      toast.error('Khóa không thành công!',{
+        position:toast.POSITION.TOP_RIGHT
+      })
+    }
   };
   const handleFixUser = (item) => {
     settoggleFixUser(true);
@@ -19,6 +30,7 @@ const TableCateAdmin = ({ apiUser, toggleModal, setToggleModal, onSubmitUser, se
   };
 
   return (
+    
     <div className='px-7'>
       <table className='text-[15px] w-full'>
         <thead>
@@ -31,14 +43,14 @@ const TableCateAdmin = ({ apiUser, toggleModal, setToggleModal, onSubmitUser, se
           </tr>
         </thead>
         <tbody className='font-medium'>
-          {apiUser &&
-            apiUser.map((item) => {
+          {apiUser.data &&
+            apiUser.data.map((item) => {
               return (
                 <tr key={item._id}>
                   <td>
                     <div className='flex items-center gap-2'>
                       <div className='w-10 h-10 rounded-[50%] overflow-hidden'>
-                        <img src={item.img}></img>
+                        <img src={item.img || ''}></img>
                       </div>
                       <span>{item.username}</span>
                     </div>
@@ -56,8 +68,8 @@ const TableCateAdmin = ({ apiUser, toggleModal, setToggleModal, onSubmitUser, se
                       <span className='inline-block mx-1 font-normal text-[20px]'>/</span>
                       <button
                         className='p-[2px_12px] rounded border bg-blue text-white hover:bg-blueBold'
-                        onClick={() => handleDeleteUser(item)}>
-                        Xóa
+                        onClick={() => handleLockUser(item)}>
+                        Khóa
                       </button>
                     </div>
                   </td>
@@ -70,9 +82,9 @@ const TableCateAdmin = ({ apiUser, toggleModal, setToggleModal, onSubmitUser, se
         itemFixUser={itemFixUser}
         toggleModal={toggleFixUser}
         setToggleModal={settoggleFixUser}
-        setValueForm={setValueForm}
+        setCallApiUser={setCallApiUser}
       />
-      <ModalAddUser toggleModal={toggleModal} setToggleModal={setToggleModal} onSubmitUser={onSubmitUser} />
+      <ModalAddUser toggleModal={toggleModal} setToggleModal={setToggleModal} onSubmitUser={onSubmitUser} errorMessage={errorMessage}/>
     </div>
   );
 };

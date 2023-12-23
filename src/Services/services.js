@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
-const dataUser = JSON.parse(localStorage.getItem("user")) || {}
+const dataUser = JSON.parse(localStorage.getItem("token")) || {}
 
 export const services = {
   categorys: baseUrl + '/category',

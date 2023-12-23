@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import HeaderAdmin from '../HeaderAdmin';
 import { toast } from 'react-toastify';
@@ -8,44 +9,48 @@ import { apiGetUsers, apiRegisterUser } from 'Services/apiUser';
 const AdminUser = () => {
   const [apiUser, setApiUser] = useState([]);
   const [toggleModal, setToggleModal] = useState(false);
-  const [valueForm, setValueForm] = useState({});
-
+  const [callApiUser, setCallApiUser] = useState({});
+  const [errorMessage, setErrorMessage] = useState('');
+  const [filters, setFilters] = useState({
+    page:1,
+    limit:8
+  });
   useEffect(() => {
     const apiUser = async () => {
-      const result = await apiGetUsers();
-      setApiUser(result.data);
+      try {
+        const result = await apiGetUsers(filters);
+        setApiUser(result);
+      } catch (error) {}
     };
     apiUser();
-  }, [valueForm]);
+  }, [callApiUser]);
 
-  const onSubmitUser = (value) => {
-    toast.success('Thêm danh mục thành công!', {
-      position: toast.POSITION.TOP_RIGHT
-    });
-    setValueForm(value);
-    if (valueForm) {
-      const apiUser = async () => {
-        await apiRegisterUser(value);
-        setToggleModal(false);
-      };
-      apiUser();
+  const onSubmitUser = async (data) => {
+    try {
+      await apiRegisterUser(data);
+      setToggleModal(false);
+      toast.success('Đăng ký thành công !', {
+        position: toast.POSITION.TOP_RIGHT
+      });
+    } catch (error) {
+      setErrorMessage(error.response.data?.message?.email || error.response.data?.message?.username || '');
     }
   };
 
   return (
     <div className=''>
-      <HeaderAdmin setToggleModal={setToggleModal} title='Thêm người dùng'/>
+      <HeaderAdmin setToggleModal={setToggleModal} title='Thêm người dùng' />
       <TableCateAdmin
+        errorMessage={errorMessage}
         apiUser={apiUser}
         toggleModal={toggleModal}
         setToggleModal={setToggleModal}
         onSubmitUser={onSubmitUser}
-        setValueForm={setValueForm}
+        setCallApiUser={setCallApiUser}
       />
-      <PaginationAdmin/>
+      <PaginationAdmin apiUser={apiUser} setFilters={setFilters} filters={filters} setCallApiUser={setCallApiUser}/>
     </div>
   );
 };
 
 export default AdminUser;
-
