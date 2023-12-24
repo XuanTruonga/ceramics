@@ -3,20 +3,26 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import ModalFixProduct from './ModalFixProduct';
 import ModalAddProduct from './ModalAddProduct';
-import { apiDeleteProducts } from 'Services/apiProduct';
+import { apiRemoveProducts } from 'Services/apiProduct';
 
-const TableProductAdmin = ({ apiProduct= [], toggleModal, setToggleModal, onSubmitProduct, setValueForm }) => {
+const TableProductAdmin = ({ apiProduct = [], toggleModal, setToggleModal, setValueForm }) => {
   const [toggleFixProduct, settoggleFixProduct] = useState(false);
   const [itemFixProduct, setItemFixProduct] = useState({});
 
-
   const handleDeleteProduct = async (item) => {
-    await apiDeleteProducts(item.id);
-    setValueForm(Math.random());
-    toast.error('Xóa danh mục thành công!', {
-      position: toast.POSITION.TOP_RIGHT
-    });
+    try {
+      await apiRemoveProducts(item._id);
+      setValueForm(item);
+      toast.error('Xóa danh mục thành công!', {
+        position: toast.POSITION.TOP_RIGHT
+      });
+    } catch (error) {
+      toast.error('Xóa danh mục thất bại!', {
+        position: toast.POSITION.TOP_RIGHT
+      });
+    }
   };
+
   const handleFixProduct = (item) => {
     settoggleFixProduct(true);
     setItemFixProduct(item);
@@ -35,38 +41,39 @@ const TableProductAdmin = ({ apiProduct= [], toggleModal, setToggleModal, onSubm
           </tr>
         </thead>
         <tbody className='font-semibold'>
-          {apiProduct && apiProduct.map((item, index) => {
-            return (
-              <tr key={item.id}>
-                <td>
-                  <div className='flex items-center gap-2'>
-                    <div className='w-10 h-10 rounded-[50%] overflow-hidden border-primaryLight border-[1px]'>
-                      <img src={item.img}></img>
+          {apiProduct &&
+            apiProduct.map((item, index) => {
+              return (
+                <tr key={item._id}>
+                  <td>
+                    <div className='flex items-center gap-2'>
+                      <div className='w-10 h-10 rounded-[50%] overflow-hidden flex-shrink-0 border-primaryLight border-[1px] flex_center'>
+                        <img src={item.img}></img>
+                      </div>
+                      <span>{item.name}</span>
                     </div>
-                    <span>{item.name}</span>
-                  </div>
-                </td>
-                <td className='text-center'>{item.quantity}</td>
-                <td className='text-center'>{parseInt(item.priceRoot).toLocaleString()}(đ)</td>
-                <td className='text-center'>{item.discount}%</td>
-                <td className='w-[16%]'>
-                  <div className='font-bold flex justify-center text-xs'>
-                    <button
-                      className='p-[2px_12px] rounded border bg-blue text-white hover:bg-blueBold'
-                      onClick={() => handleFixProduct(item)}>
-                      Sửa
-                    </button>
-                    <span className='inline-block mx-1 font-normal text-[20px]'>/</span>
-                    <button
-                      className='p-[2px_12px] rounded border bg-blue text-white hover:bg-blueBold'
-                      onClick={() => handleDeleteProduct(item)}>
-                      Xóa
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            );
-          })}
+                  </td>
+                  <td className='text-center'>{item.quantity}</td>
+                  <td className='text-center'>{parseInt(item.priceRoot).toLocaleString()}(đ)</td>
+                  <td className='text-center'>{item.discount}%</td>
+                  <td className='w-[16%]'>
+                    <div className='font-bold flex justify-center text-xs'>
+                      <button
+                        className='p-[2px_12px] rounded border bg-blue text-white hover:bg-blueBold'
+                        onClick={() => handleFixProduct(item)}>
+                        Sửa
+                      </button>
+                      <span className='inline-block mx-1 font-normal text-[20px]'>/</span>
+                      <button
+                        className='p-[2px_12px] rounded border bg-blue text-white hover:bg-blueBold'
+                        onClick={() => handleDeleteProduct(item)}>
+                        Xóa
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
         </tbody>
       </table>
       <ModalFixProduct
@@ -75,7 +82,7 @@ const TableProductAdmin = ({ apiProduct= [], toggleModal, setToggleModal, onSubm
         setToggleModal={settoggleFixProduct}
         setValueForm={setValueForm}
       />
-      <ModalAddProduct toggleModal={toggleModal} setToggleModal={setToggleModal} onSubmitProduct={onSubmitProduct}/>
+      <ModalAddProduct toggleModal={toggleModal} setToggleModal={setToggleModal} setValueForm={setValueForm} />
     </div>
   );
 };

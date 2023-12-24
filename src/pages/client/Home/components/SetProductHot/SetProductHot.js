@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/alt-text */
+import { Link } from "react-router-dom";
 import LayoutSection from "../../Layout/LayoutSection";
 
 const setProduct = [
@@ -46,12 +47,12 @@ function SetProductHot() {
             {setProduct.map((item, index) => {
               return (
                 <div key={index} className="col-span-1">
-                  <a href="#" className="overflow-hidden rounded-xl block">
+                  <Link to="/san-pham" className="overflow-hidden rounded-xl block">
                     <img
                       className="rounded-xl hover:scale-110 transition"
                       src={item.img}
                     ></img>
-                  </a>
+                  </Link>
                   <div className="text-center">
                     <span className="font-semibold text-lg mt-4 mb-2 block">
                       {item.name}

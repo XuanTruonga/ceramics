@@ -1,52 +1,20 @@
 import { Link } from 'react-router-dom';
 import BgWhiteLayout from '../../Layout/LayoutSection';
 import ProductItem from 'components/ProductItem/ProductItem';
+import { useEffect, useState } from 'react';
+import { apiGetProducts } from 'Services/apiProduct';
 
-const products = [
-  {
-    id: 1,
-    name: 'sản phẩm',
-    priceRoot: 4000000,
-    discount: 37,
-    img: '//bizweb.dktcdn.net/thumb/large/100/485/241/products/untitled-2.png?v=1686285750047'
-  },
-  {
-    id: 2,
-    name: 'gà tre',
-    priceRoot: 330000,
-    discount: 37,
-    img: '//bizweb.dktcdn.net/thumb/large/100/485/241/products/untitled-2.png?v=1686285750047'
-  },
-  {
-    id: 3,
-    name: 'sứ trung hoa',
-    priceRoot: 78900000,
-    discount: 37,
-    img: '//bizweb.dktcdn.net/thumb/large/100/485/241/products/untitled-2.png?v=1686285750047'
-  },
-  {
-    id: 4,
-    name: 'gốm ok',
-    priceRoot: 1000800,
-    discount: 37,
-    img: '//bizweb.dktcdn.net/thumb/large/100/485/241/products/untitled-2.png?v=1686285750047'
-  },
-  {
-    id: 5,
-    name: 'đẳng cấp',
-    priceRoot: 6060000,
-    discount: 37,
-    img: '//bizweb.dktcdn.net/thumb/large/100/485/241/products/untitled-2.png?v=1686285750047'
-  },
-  {
-    id: 6,
-    name: 'uy tín',
-    priceRoot: 4004040,
-    discount: 37,
-    img: '//bizweb.dktcdn.net/thumb/large/100/485/241/products/untitled-2.png?v=1686285750047'
-  }
-];
 function GiftCompany() {
+  const [dataGiftCompany,setDataGiftCompany] = useState()
+  useEffect(() => {
+    const apiProducts = async () => {
+      try {
+        const result = await apiGetProducts({limit:8,page:2});
+        setDataGiftCompany(result.data);
+      } catch (error) {}
+    };
+    apiProducts();
+  }, []);
   return (
     <BgWhiteLayout>
       <div>
@@ -62,7 +30,7 @@ function GiftCompany() {
 
         {/* body */}
         <div className='grid grid-cols-12 gap-5'>
-          {products.map((item, index) => {
+          {dataGiftCompany.map((item, index) => {
             return (
               <div className='col-span-3' key={index}>
                 <ProductItem data={item} />

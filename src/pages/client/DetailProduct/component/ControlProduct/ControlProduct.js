@@ -1,5 +1,8 @@
 /* eslint-disable jsx-a11y/alt-text */
+import { ThemeContext } from 'App';
 import { CartIconFull } from 'components/Icon/Icon';
+import { HandleAddCart } from 'components/ProductItem/HandleCart';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -26,10 +29,12 @@ const products = [
   }
 ];
 
-function ControlProduct() {
-  // let setRenderApp = useContext(ThemeContext);
+function ControlProduct({data}) {
+  const renderContext = useContext(ThemeContext)
+  const price = data?.priceRoot - (data?.priceRoot / 100) * data?.discount;
 
   const handleAddProductCart = ()=>{
+    HandleAddCart(data,renderContext.setRenderApp)
     toast.success("Thêm vào giỏ hàng thành công!", {
       position: toast.POSITION.TOP_RIGHT
     });
@@ -37,7 +42,7 @@ function ControlProduct() {
 
   return (
     <div className='text-sm px-3 font-medium'>
-      <h1 className='font-32 mb-4 leading-9'>Bộ khay mứt 31.5cm Thiên Kim</h1>
+      {/* <h1 className='font-32 mb-4 leading-9'>Bộ khay mứt 31.5cm Thiên Kim</h1> */}
 
       <div className='border-b border-text pb-4'>
         <span className='text-base'>Tình trạng:</span>
@@ -45,11 +50,11 @@ function ControlProduct() {
       </div>
 
       <div className='pt-4 border-b border-text'>
-        <span className='text-[30px] font-semibold'>1.234.564₫</span>
-        <span className='ml-3 line-through'>1.254₫</span>
+        <span className='text-[30px] font-semibold'>{price.toLocaleString()}₫</span>
+        <span className='ml-3 line-through'>{data?.priceRoot.toLocaleString()}₫</span>
         <div className='my-1'>
           <span className=''>Tiết kiệm:</span>
-          <span className='text-red ml-1'>1234₫</span>
+          <span className='text-red ml-1'>{(data?.priceRoot-price).toLocaleString()}</span>
         </div>
       </div>
 
@@ -61,7 +66,7 @@ function ControlProduct() {
           <span className=''>
             <CartIconFull />
           </span>
-          <span className=''>THÊM VÀO GIỎ</span>
+          <span>THÊM VÀO GIỎ</span>
         </button>
       </div>
 
@@ -71,7 +76,7 @@ function ControlProduct() {
             {products.map((item, index) => {
               return (
                 <li key={index} className='flex-1 text-center flex flex-col items-center'>
-                  <Link to='san-pham' className='w-[80px] h-[80px] flex_center'>
+                  <Link to='/san-pham' className='w-[80px] h-[80px] flex_center'>
                     <img src={item.img}></img>
                   </Link>
                   <span className='font-bold text-primary'>{item.price}</span>
@@ -112,9 +117,7 @@ function ControlProduct() {
         </div>
       </div>
 
-      <div className='mt-5'>
-        <img src='//bizweb.dktcdn.net/100/485/241/themes/911577/assets/banner_product.png?1700209535143'></img>
-      </div>
+    
     </div>
   );
 }

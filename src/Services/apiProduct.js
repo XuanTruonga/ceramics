@@ -1,34 +1,23 @@
-import { axiosInstance } from "./services";
+import { axiosInstance, baseEndpoint } from './services';
 
-
-export const apiGetProducts = async () => {
-  try {
-    const res = await axiosInstance.get('/product');
-    return res.data;
-  } catch (error) {
-    console.log(error);
-  }
+export const apiGetProducts = async (option = {}) => {
+  const res = await axiosInstance.get(baseEndpoint.product, {
+    params: option
+  });
+  return res.data;
 };
 
-export const apiDeleteProducts = async (id)=>{
-  try {
-  const res = await axiosInstance.delete(`/product/${id}`)
-  return res
-} catch (error) {
-  console.log(error)
-}
-}
+export const apiRemoveProducts = async (id) => {
+  const res = await axiosInstance.delete(`${baseEndpoint.product}/remove/${id}`);
+  return res;
+};
 
-export const apiPostProducts = async (post={})=>{
-  try {
-    const res = await axiosInstance.post('/product',post)
-    return res
-  } catch (error) {
-    console.log(error)
-  }
-}
+export const apiPostProducts = async (data = {}) => {
+  const res = await axiosInstance.post(baseEndpoint.product+'/create', data);
+  return res;
+};
 
-export const apiPutProducts = async (id,post)=>{
-  const res = await axiosInstance.put(`/product/${id}`,post)
-  return res
-}
+export const apiUpdateProducts = async (id, data) => {
+  const res = await axiosInstance.put(`${baseEndpoint.product}/update/${id}`, data);
+  return res;
+};

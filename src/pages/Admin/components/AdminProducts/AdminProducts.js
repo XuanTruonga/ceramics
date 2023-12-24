@@ -1,48 +1,38 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import HeaderAdmin from '../HeaderAdmin';
-import { toast } from 'react-toastify';
-import PaginationAdmin from '../paginationAdmin';
 import TableProductAdmin from './TableProductAdmin';
-import { apiGetProducts, apiPostProducts } from 'Services/apiProduct';
+import { apiGetProducts } from 'Services/apiProduct';
+import PaginationAdmin from '../paginationAdmin';
 
 const AdminProducts = () => {
   const [apiProduct, setApiProduct] = useState([]);
   const [toggleModal, setToggleModal] = useState(false);
   const [valueForm, setValueForm] = useState({});
-
+  const [filters, setFilters] = useState({
+    page: 1,
+    limit: 10
+  });
   useEffect(() => {
     const apiProducts = async () => {
-      const result = await apiGetProducts();
-      setApiProduct(result.data);
+      try {
+        const result = await apiGetProducts(filters);
+        setApiProduct(result);
+      } catch (error) {}
     };
     apiProducts();
   }, [valueForm]);
 
-  const onSubmitProduct = (value) => {
-    toast.success('Thêm danh mục thành công!', {
-      position: toast.POSITION.TOP_RIGHT
-    });
-    setValueForm(value);
-    if (valueForm) {
-      const apiProducts = async () => {
-        await apiPostProducts(value);
-        setToggleModal(false);
-      };
-      apiProducts();
-    }
-  };
-
   return (
     <div className='font-semibold'>
-      <HeaderAdmin setToggleModal={setToggleModal} title='Thêm sản phẩm'/>
+      <HeaderAdmin setToggleModal={setToggleModal} title='Thêm sản phẩm' />
       <TableProductAdmin
-        apiProduct={apiProduct}
+        apiProduct={apiProduct.data}
         toggleModal={toggleModal}
         setToggleModal={setToggleModal}
-        onSubmitProduct={onSubmitProduct}
-        setValueForm={setValueForm} 
+        setValueForm={setValueForm}
       />
-      <PaginationAdmin/>
+      <PaginationAdmin api={apiProduct} filters={filters} setFilters={setFilters} setCallApiUser={setValueForm} />
     </div>
   );
 };

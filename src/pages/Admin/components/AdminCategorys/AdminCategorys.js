@@ -3,7 +3,7 @@ import HeaderAdmin from '../HeaderAdmin';
 import TableCateAdmin from './TableCateAdmin';
 import { toast } from 'react-toastify';
 import PaginationAdmin from '../paginationAdmin';
-import { apiGetCategorys, apiPostCategorys } from 'Services/apiCategory';
+import { apiGetCategorys, apiPostCategorys, apiCategorys } from 'Services/apiCategory';
 
 const AdminCategorys = () => {
   const [apiCates, setApiCates] = useState([]);
@@ -25,7 +25,7 @@ const AdminCategorys = () => {
     setValueForm(value);
     if (valueForm) {
       const apiCate = async () => {
-        await apiPostCategorys(value);
+        await apiUpdateCategorys(value);
         setToggleModal(false);
       };
       apiCate();

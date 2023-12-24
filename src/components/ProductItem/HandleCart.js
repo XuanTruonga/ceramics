@@ -6,11 +6,12 @@ const heartStorageKey = 'Heart';
 let config = localStorageCartProducts();
 let configHeart = localStorageHeartProducts();
 
+
 export const HandleAddCart = (data, setRenderApp) => {
   let newData = { ...data, quantityProductCart: 1 };
-  const product = config.find((item) => item.id === newData.id);
+  const product = config.find((item) => item._id === newData._id);
   if (product) {
-    const indexConfig = config.findIndex((item) => item.id === product.id);
+    const indexConfig = config.findIndex((item) => item._id === product._id);
     config[indexConfig] = { ...product, quantityProductCart: ++product.quantityProductCart };
   } else {
     config.push(newData);
@@ -21,9 +22,9 @@ export const HandleAddCart = (data, setRenderApp) => {
 
 export const HandleAddProductLike = (data, setRenderApp) => {
   const newData = { ...data, isHeart: true };
-  const product = configHeart.find((item) => item.id === data.id);
+  const product = configHeart.find((item) => item._id === data._id);
   if (product) {
-    const indexConfig = configHeart.findIndex((item) => item.id === product.id);
+    const indexConfig = configHeart.findIndex((item) => item._id === product._id);
     configHeart.splice(indexConfig, 1);
     toast.error('Bỏ sản phẩm yêu thích thành công!', {
       position: toast.POSITION.TOP_RIGHT
@@ -40,7 +41,7 @@ export const HandleAddProductLike = (data, setRenderApp) => {
 
 export const HandleDeleteProductLike = (data, setRenderApp) => {
   const indexConfigHeart = configHeart.findIndex((item) => {
-    return item.id === data.id;
+    return item._id === data._id;
   });
   configHeart.splice(indexConfigHeart, 1);
   localStorage.setItem(heartStorageKey, JSON.stringify(configHeart));

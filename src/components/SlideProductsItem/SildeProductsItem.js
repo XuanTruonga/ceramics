@@ -7,52 +7,21 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import { useEffect, useState } from 'react';
+import { apiGetProducts } from 'Services/apiProduct';
 
-const products = [
-  {
-    id: 1,
-    name: 'sản phẩm',
-    priceRoot: 4000000,
-    discount: 37,
-    img: '//bizweb.dktcdn.net/thumb/large/100/485/241/products/untitled-2.png?v=1686285750047'
-  },
-  {
-    id: 2,
-    name: 'gà tre',
-    priceRoot: 330000,
-    discount: 37,
-    img: '//bizweb.dktcdn.net/thumb/large/100/485/241/products/untitled-2.png?v=1686285750047'
-  },
-  {
-    id: 3,
-    name: 'sứ trung hoa',
-    priceRoot: 78900000,
-    discount: 37,
-    img: '//bizweb.dktcdn.net/thumb/large/100/485/241/products/untitled-2.png?v=1686285750047'
-  },
-  {
-    id: 4,
-    name: 'gốm ok',
-    priceRoot: 1000800,
-    discount: 37,
-    img: '//bizweb.dktcdn.net/thumb/large/100/485/241/products/untitled-2.png?v=1686285750047'
-  },
-  {
-    id: 5,
-    name: 'đẳng cấp',
-    priceRoot: 6060000,
-    discount: 37,
-    img: '//bizweb.dktcdn.net/thumb/large/100/485/241/products/untitled-2.png?v=1686285750047'
-  },
-  {
-    id: 6,
-    name: 'uy tín',
-    priceRoot: 4004040,
-    discount: 37,
-    img: '//bizweb.dktcdn.net/thumb/large/100/485/241/products/untitled-2.png?v=1686285750047'
-  }
-];
 function SlideProductItem({ title, classImg, data }) {
+  const [dataCate,setDataCate] = useState()
+  useEffect(() => {
+    const apiProducts = async () => {
+      try {
+        const result = await apiGetProducts({limit:6});
+        setDataCate(result.data);
+      } catch (error) {}
+    };
+    apiProducts();
+  }, []);
+
   return (
     <div>
       <LayoutSection>
@@ -73,10 +42,10 @@ function SlideProductItem({ title, classImg, data }) {
           // loop={true}
           // pagination={{ clickable: true }}
         >
-          {products.map((item,index) => { 
+          {dataCate && dataCate.map((item,index) => { 
             return (
                 <SwiperSlide  key={index}>
-                  <div className='flex justify-center p-3'>
+                  <div className='flex justify-center p-3 w-full'>
                     <ProductItem classImg={classImg} data={item} />
                   </div>
                 </SwiperSlide>

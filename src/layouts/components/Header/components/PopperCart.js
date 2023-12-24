@@ -15,7 +15,6 @@ import { ThemeContext } from 'App';
 
 function ModeCart() {
   const setRenderApp = useContext(ThemeContext);
-  const [reset, setReset] = useState();
   const dataLocalStorageCart = localStorageCartProducts();
   return (
     <div className='hover-output top-[115%] right-[2px] cursor-default transition smooth'>
@@ -29,8 +28,8 @@ function ModeCart() {
                 return (
                   <div key={index} className='item flex border-b border-solid border-slate-300 mt-[10px]'>
                     {/* img */}
-                    <Link className='w-[80px] h-[80px]'>
-                      <img src='https://bizweb.dktcdn.net/thumb/compact/100/485/241/products/untitled-2-fec4632c-f1cc-4a6f-a5f6-166c038fd371.png'></img>
+                    <Link className='w-[80px] h-[80px] flex_center'>
+                      <img src={product.img}></img>
                     </Link>
                     {/* content */}
                     <div className='des flex-1 pl-4'>

@@ -29,7 +29,7 @@ import LoginAdmin from "pages/client/LoginAdmin/LoginAdmin"
    { path: '/dang-ky', component: Register, layout:'account'},  
    { path: '/tin-tuc', component: News},  
    { path: '/san-pham', component: Product},  
-   { path: '/productCard', component: DetailProduct},  
+   { path: '/san-pham/:id', component: DetailProduct},  
    { path: '/cua-hang', component: Shop},
    { path: '/tin-tuc-detail', component: NewsDetail},
    { path: '/thanh-toan', component: Pay,layout:'only'},

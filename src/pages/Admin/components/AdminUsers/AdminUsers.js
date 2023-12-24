@@ -48,7 +48,7 @@ const AdminUser = () => {
         onSubmitUser={onSubmitUser}
         setCallApiUser={setCallApiUser}
       />
-      <PaginationAdmin apiUser={apiUser} setFilters={setFilters} filters={filters} setCallApiUser={setCallApiUser}/>
+      <PaginationAdmin api={apiUser} setFilters={setFilters} filters={filters} setCallApiUser={setCallApiUser}/>
     </div>
   );
 };

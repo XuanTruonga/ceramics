@@ -8,6 +8,8 @@ import { toast } from 'react-toastify';
 const TableCateAdmin = ({ apiCates = [], toggleModal, setToggleModal, onSubmitCate, setValueForm }) => {
   const [toggleFixCate, settoggleFixCate] = useState(false);
   const [itemFixCate, setItemFixCate] = useState({});
+  
+  console.log(apiCates)
 
   const handleDeleteCate = async (item) => {
     await apiDeleteCategorys(item.id);
@@ -34,7 +36,7 @@ const TableCateAdmin = ({ apiCates = [], toggleModal, setToggleModal, onSubmitCa
           </tr>
         </thead>
         <tbody className='font-medium'>
-          {apiCates && apiCates.map((item, index) => {
+          {apiCates.length > 0 && apiCates.map((item, index) => {
             return (
               <tr key={item.id}>
                 <td>

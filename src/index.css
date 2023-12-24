@@ -195,7 +195,10 @@ tr{
 .swiper-button-next, .swiper-button-prev{
   @apply bg-white h-8 w-8 rounded-[50%] border-[1px] border-solid border-primary
 }
-
+/* toast */
+.Toastify__toast-container, .Toastify__toast-container--top-right{
+  @apply !z-[9999999999]
+}
 /* animation */
 .transition {
   transition: all 0.2s linear;

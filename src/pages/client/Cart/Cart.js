@@ -43,8 +43,8 @@ function Cart() {
                         <div className='flex items-center gap-7'>
                           <Link to='/san-pham'>
                             <img
-                              className='h-[100px] border-[1px] ml-2 border-slate-200 rounded-[50%]'
-                              src='https://bizweb.dktcdn.net/thumb/compact/100/485/241/products/untitled-2-fec4632c-f1cc-4a6f-a5f6-166c038fd371.png'></img>
+                              className='h-[100px] w-[100px] border-[1px] ml-2 border-slate-200 rounded-[50%] object-contain bg-pink '
+                              src={item.img}></img>
                           </Link>
                           <div>
                             <Link to='/san-pham' className='block hover:text-primary transition'>
@@ -83,7 +83,7 @@ function Cart() {
                   );
                 })
               ) : (
-                <div className='w-full flex_center h-full text-primary text-base'>Chưa có sản phẩm nào.</div>
+                <td><div className='w-full flex_center h-full text-primary text-base'>Chưa có sản phẩm nào.</div></td>
               )}
             </tbody>
           </table>

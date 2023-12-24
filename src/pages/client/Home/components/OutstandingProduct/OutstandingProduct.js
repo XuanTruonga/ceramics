@@ -1,52 +1,64 @@
 import ProductItem from 'components/ProductItem/ProductItem';
 import LayoutSection from '../../Layout/LayoutSection';
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { apiGetProducts } from 'Services/apiProduct';
 const products = [
   {
     id: 1,
-    name: 'sản phẩm',
+    name: 'Bộ phin cà phê - Camellia - Màu cà phê',
     priceRoot: 4000000,
     discount: 37,
-    img: '//bizweb.dktcdn.net/thumb/large/100/485/241/products/untitled-2.png?v=1686285750047'
+    img: '//bizweb.dktcdn.net/thumb/large/100/485/241/products/27070237703-bo-phin-ca-phe-cam.png?v=1685369825897'
   },
   {
     id: 2,
-    name: 'gà tre',
-    priceRoot: 330000,
-    discount: 37,
-    img: '//bizweb.dktcdn.net/thumb/large/100/485/241/products/untitled-2.png?v=1686285750047'
+    name: 'Bộ trà cao 0.8 L - Sago - Hoa Hồng Đen khắc nổi',
+    priceRoot: 3300600,
+    discount: 56,
+    img: '//bizweb.dktcdn.net/thumb/large/100/485/241/products/a001-212471497b-01-df50f9bf7adf4.png?v=1685369066860'
   },
   {
     id: 3,
-    name: 'sứ trung hoa',
+    name: 'Bộ trà cao 1.3 L - Sago - Thiên Tuế',
     priceRoot: 78900000,
-    discount: 37,
-    img: '//bizweb.dktcdn.net/thumb/large/100/485/241/products/untitled-2.png?v=1686285750047'
+    discount: '',
+    img: '//bizweb.dktcdn.net/thumb/large/100/485/241/products/063095470-95de64ad269a42d9a3b438.png?v=1685368729000'
   },
   {
     id: 4,
-    name: 'gốm ok',
+    name: 'Chén đường 10 cm + nắp - Sago - Hoa Hồng',
     priceRoot: 1000800,
-    discount: 37,
-    img: '//bizweb.dktcdn.net/thumb/large/100/485/241/products/untitled-2.png?v=1686285750047'
+    discount: 34,
+    img: '//bizweb.dktcdn.net/thumb/large/100/485/241/products/153-1-b110baa25b6e4c54846e958d77-1.png?v=1685367619410'
   },
   {
     id: 5,
-    name: 'đẳng cấp',
+    name: 'Ca trà 0.30 L - Hoàng Cung - Lạc Hồng',
     priceRoot: 6060000,
-    discount: 37,
-    img: '//bizweb.dktcdn.net/thumb/large/100/485/241/products/untitled-2.png?v=1686285750047'
+    discount: '',
+    img: '//bizweb.dktcdn.net/thumb/large/100/485/241/products/untitled-2.png?v=1686285750000'
   },
   {
     id: 6,
-    name: 'uy tín',
+    name: 'Ca thon quai số 7 0.33 L - Jasmine - Trắng',
     priceRoot: 4004040,
-    discount: 37,
-    img: '//bizweb.dktcdn.net/thumb/large/100/485/241/products/untitled-2.png?v=1686285750047'
+    discount: '',
+    img: '//bizweb.dktcdn.net/thumb/large/100/485/241/products/untitled-1-dbdc1ff3-ac6c-4e56-954f-014ee4b5ec86.png?v=1686305869000'
   }
 ];
 
 function OutstandingProducts() {
+  const [dataOutStanding,setDataOutStanding] = useState()
+  useEffect(() => {
+    const apiProducts = async () => {
+      try {
+        const result = await apiGetProducts({limit:6,page:2});
+        setDataOutStanding(result.data);
+      } catch (error) {}
+    };
+    apiProducts();
+  }, []);
   return (
     <LayoutSection>
       <div>
@@ -70,7 +82,7 @@ function OutstandingProducts() {
           </ul>
         </div>
         <div className='grid grid-cols-12 gap-5'>
-          {products.map((item, index) => {
+          {dataOutStanding && dataOutStanding.map((item, index) => {
             return (
               <div className='col-span-3' key={index}>
                 <ProductItem data={item}/>

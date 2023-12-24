@@ -49,9 +49,9 @@ const TableCateAdmin = ({ apiUser, toggleModal, setToggleModal, onSubmitUser, se
                 <tr key={item._id}>
                   <td>
                     <div className='flex items-center gap-2'>
-                      <div className='w-10 h-10 rounded-[50%] overflow-hidden'>
+                      {/* <div className='w-10 h-10 rounded-[50%] overflow-hidden'>
                         <img src={item.img || ''}></img>
-                      </div>
+                      </div> */}
                       <span>{item.username}</span>
                     </div>
                   </td>

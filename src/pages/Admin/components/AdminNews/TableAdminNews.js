@@ -34,7 +34,7 @@ const TableAdminNews = ({ apiCates, toggleModal, setToggleModal, onSubmitCate, s
           </tr>
         </thead>
         <tbody className='font-medium'>
-          {apiCates && apiCates.map((item, index) => {
+          {apiCates.length > 0 && apiCates.map((item, index) => {
             return (
               <tr key={item.id}>
                 <td>

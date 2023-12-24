@@ -51,7 +51,7 @@ function CategorySlide({ title = 'GỐM SỨ' }) {
               slidesPerView={4}
               navigation
               pagination={{ clickable: true }}>
-              {categoryItems && categoryItems.map((item, index) => {
+              {categoryItems.length > 0 && categoryItems.map((item, index) => {
                 return (
                   <SwiperSlide className='!flex justify-center' key={item.img}>
                     <CategoryItem data={item} />
