@@ -1,7 +1,5 @@
 const PaginationAdmin = ({ api = {}, setFilters, filters = {}, setCallApiUser }) => {
-  // console.log(api)
   const handleFilterPage = (index) => {
-    console.log(index)
     setCallApiUser(index);
     setFilters({ ...filters, page: index + 1 });
   };

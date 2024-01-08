@@ -8,14 +8,15 @@ import {
   totalMoney
 } from 'components/ProductItem/HandleCart';
 import { localStorageCartProducts } from 'components/localStorage/localStorage';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import { ThemeContext } from 'App';
+import { AuthContext } from 'UseContext/AuthContext';
 
 function ModeCart() {
   const setRenderApp = useContext(ThemeContext);
   const dataLocalStorageCart = localStorageCartProducts();
+  const { isAuthenticated } = useContext(AuthContext);
   return (
     <div className='hover-output top-[115%] right-[2px] cursor-default transition smooth'>
       {dataLocalStorageCart.length > 0 ? (
@@ -50,7 +51,9 @@ function ModeCart() {
                           <div className='wrapper-up-down '>
                             <button
                               className='h-[30px] w-[30px] hover:bg-slate-50'
-                              onClick={() => HandleDownProduct(dataLocalStorageCart, index, setRenderApp.setRenderApp)}
+                              onClick={() =>
+                                HandleDownProduct(dataLocalStorageCart, index, setRenderApp.setRenderApp)
+                              }
                               style={
                                 product.quantityProductCart === 1 ? { opacity: 0.4, pointerEvents: 'none' } : {}
                               }>
@@ -59,7 +62,9 @@ function ModeCart() {
                             <span className='px-2'>{product.quantityProductCart}</span>
                             <button
                               className='h-[30px] w-[30px] hover:bg-slate-50'
-                              onClick={() => HandleUpProduct(dataLocalStorageCart, index, setRenderApp.setRenderApp)}
+                              onClick={() =>
+                                HandleUpProduct(dataLocalStorageCart, index, setRenderApp.setRenderApp)
+                              }
                               style={
                                 product.quantityProductCart === dataLocalStorageCart[index].quantity
                                   ? { opacity: 0.4, pointerEvents: 'none' }
@@ -86,7 +91,7 @@ function ModeCart() {
                 <span className='font-14 text-red'>{totalMoney(dataLocalStorageCart).toLocaleString()}đ</span>
               </div>
               <Link
-                to='/thanh-toan'
+                to={isAuthenticated ? '/thanh-toan' : '/dang-nhap'}
                 className='w-full text-white font-semibold py-2 px-4 rounded bg-primary hover:opacity-90 
                   transition text-center block'>
                 Thanh toán

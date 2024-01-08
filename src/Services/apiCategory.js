@@ -1,8 +1,10 @@
 import { axiosInstance, baseEndpoint } from "./services";
 
 
-export const apiGetCategorys = async () => {
-    const res = await axiosInstance.get(baseEndpoint.categorys);
+export const apiGetCategorys = async (option={}) => {
+    const res = await axiosInstance.get(baseEndpoint.categorys,{
+        params:option
+    });
     return res.data;
 };
 

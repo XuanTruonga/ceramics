@@ -2,14 +2,14 @@
 import { CloseIcon } from 'components/Icon/Icon';
 import ControlProduct from 'pages/client/DetailProduct/component/ControlProduct/ControlProduct';
 import ImgDetail from 'pages/client/DetailProduct/component/ImgDetail/ImgDetail';
-import {  useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import Modal from './Modal';
 import AddCartSuccess from './AddCartSuccess';
 
 function ModeQuickView({ toogleModeProduct, setToogleModeProduct, data = {} }) {
   const [toogleModeAddCart, setToogleModeAddCart] = useState(false);
   const modeEl = useRef();
-  
+
   const handleOffMode = (e) => {
     if (e.target === modeEl.current) {
       setToogleModeProduct(false);
@@ -30,9 +30,9 @@ function ModeQuickView({ toogleModeProduct, setToogleModeProduct, data = {} }) {
                 <div className='p-6 h-full flex'>
                   <div className=' px-4'>
                     <ImgDetail data={data}></ImgDetail>
-                    <h1 className='text-[24px] font-semibold mb-4 leading-9 mt-4 text-primary'>{data.name}</h1>
-                    <div className='p-5'>
+                    <div className='p-5 mt-10'>
                       <img src='//bizweb.dktcdn.net/100/485/241/themes/911577/assets/banner_product.png?1700209535143'></img>
+                      <h1 className='text-[24px] font-semibold mb-4 leading-9 mt-4 text-primary'>Bình hút lộc: 01653227547.</h1>
                     </div>
                   </div>
                   <div className='w-[55%] px-4'>

@@ -1,33 +1,24 @@
-import { axiosInstance } from "./services";
+import { axiosInstance, baseEndpoint } from "./services";
 
-export const apiGetOrder = async () => {
-  try {
-    const res = await axiosInstance.get('/orders');
+
+export const apiGetBill = async (option={}) => {
+    const res = await axiosInstance.get(baseEndpoint.bill,{
+        params:option
+    });
     return res.data;
-  } catch (error) {
-    console.log(error);
-  }
 };
 
-export const apiDeleteOrders = async (id)=>{
-  try {
-  const res = await axiosInstance.delete(`/orders/${id}`)
-  return res
-} catch (error) {
-  console.log(error)
-}
-}
-
-export const apiPostOrders = async (post={})=>{
-  try {
-    const res = await axiosInstance.post('/orders',post)
+export const apiDeleteBill = async (id)=>{
+    const res = await axiosInstance.delete(baseEndpoint.bill +'/remove/'+ id)
     return res
-  } catch (error) {
-    console.log(error)
-  }
 }
 
-export const apiPutOrders = async (id,post)=>{
-  const res = await axiosInstance.put(`/orders/${id}`,post)
-  return res
+export const apiAddBill = async (data={})=>{
+    const res = await axiosInstance.post(baseEndpoint.bill+'/create',data)
+    return res
 }
+
+// export const apiUpdateCategorys = async (id,post)=>{
+//   const res = await axiosInstance.put(`${baseEndpoint.categorys}/update/${id}`,post)
+//   return res
+// }

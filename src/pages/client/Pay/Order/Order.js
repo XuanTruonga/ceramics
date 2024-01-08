@@ -1,4 +1,4 @@
-import { PrevIcon, RoteIcon } from 'components/Icon/Icon';
+import { PrevIcon } from 'components/Icon/Icon';
 import OrderProductItem from './OrderProductItem';
 import { Link } from 'react-router-dom';
 import { localStorageCartProducts } from 'components/localStorage/localStorage';
@@ -17,13 +17,27 @@ function Order() {
       <div className='pl-7'>
         <div className='py-3 h-[480px] max-h-[40vh] overflow-auto border-b-[1px] border-text '>
           <div>
-            {dataLocalStorageCart.map((item, index) => {
-              return (
-                <div key={index}>
-                  <OrderProductItem data={item} />
-                </div>
-              );
-            })}
+            {dataLocalStorageCart.length > 0 ? (
+              dataLocalStorageCart.map((item, index) => {
+                return (
+                  <div key={index}>
+                    <OrderProductItem data={item} />
+                  </div>
+                );
+              })
+            ) : (
+              <div className='flex_center flex-col gap-5 w-full h-full'>
+                <div
+                  className='w-[100px] h-[100px]'
+                  style={{
+                    backgroundImage:
+                      'url(https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/orderlist/5fafbb923393b712b96488590b8f781f.png)',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundSize: '100px'
+                  }}></div>
+                <span className='block font-18'>Chưa có sản phẩm nào</span>
+              </div>
+            )}
           </div>
         </div>
         {/* ma giam gia */}

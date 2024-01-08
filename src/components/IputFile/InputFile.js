@@ -28,7 +28,7 @@ const InputFile = ({ name, control,...props }) => {
       const file = e.target.files[0];
       handleSetValueForm(file);
     }
-  };
+  }; 
 
   return (
     <div>

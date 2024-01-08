@@ -30,7 +30,7 @@ function GiftCompany() {
 
         {/* body */}
         <div className='grid grid-cols-12 gap-5'>
-          {dataGiftCompany.map((item, index) => {
+          {dataGiftCompany && dataGiftCompany.map((item, index) => {
             return (
               <div className='col-span-3' key={index}>
                 <ProductItem data={item} />

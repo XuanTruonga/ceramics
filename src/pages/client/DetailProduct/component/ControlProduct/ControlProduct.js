@@ -42,7 +42,7 @@ function ControlProduct({data}) {
 
   return (
     <div className='text-sm px-3 font-medium'>
-      {/* <h1 className='font-32 mb-4 leading-9'>Bộ khay mứt 31.5cm Thiên Kim</h1> */}
+      <h1 className='font-32 mb-4 leading-9'>{data?.name}</h1>
 
       <div className='border-b border-text pb-4'>
         <span className='text-base'>Tình trạng:</span>
@@ -50,8 +50,8 @@ function ControlProduct({data}) {
       </div>
 
       <div className='pt-4 border-b border-text'>
-        <span className='text-[30px] font-semibold'>{price.toLocaleString()}₫</span>
-        <span className='ml-3 line-through'>{data?.priceRoot.toLocaleString()}₫</span>
+        <span className='text-[30px] text-primaryLight font-semibold'>{price.toLocaleString()}₫</span>
+        <span className='ml-3 line-through text-red font-bold'>{data?.priceRoot.toLocaleString()}₫</span>
         <div className='my-1'>
           <span className=''>Tiết kiệm:</span>
           <span className='text-red ml-1'>{(data?.priceRoot-price).toLocaleString()}</span>

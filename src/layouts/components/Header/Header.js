@@ -10,10 +10,13 @@ import PopperCategory from './components/PopperProduct';
 import NavSearch from './components/NavSearch/NavSearch';
 import SearchMode from './components/SearchMode/SearchMode';
 import { AuthContext } from 'UseContext/AuthContext';
+import ActiveHeaderMenu from 'components/ActiveHeaderMenu/ActiveHeaderMenu';
+import { cn } from 'ultis/cn';
 
 function Header() {
   const [modeSearch, setModeSearch] = useState(false);
   const authContext = useContext(AuthContext);
+  const [activeMenu, setActiveMenu] = useState();
 
   const { user, isAuthenticated } = authContext;
 
@@ -32,34 +35,59 @@ function Header() {
               className='max-h-14'></img>
           </a>
           {/* nav text */}
-          <div className='col-span-8 rounded-[10px] hidden lg:flex_center'>
+          <div className='col-span-8 rounded-[10px] flex_center'>
             <div className='flex_center'>
-              <Link className='nav_text' to='/'>
+              <ActiveHeaderMenu setActiveMenu={setActiveMenu} />
+              <Link
+                to='/'
+                className={cn('nav_text', {
+                  'text-primaryLight': activeMenu === '/'
+                })}>
                 TRANG CHỦ
               </Link>
-              <Link className='nav_text' to='/gioi-thieu'>
+              <Link
+                to='/gioi-thieu'
+                className={cn('nav_text', {
+                  'text-primaryLight': activeMenu === 'GIỚI THIỆU'
+                })}>
                 GIỚI THIỆU
               </Link>
               <div className='hover-input'>
-                <Link className='nav_text' to='/san-pham'>
+                <Link
+                  to='/san-pham'
+                  className={cn('nav_text', {
+                    'text-primaryLight': activeMenu === 'SẢN PHẨM'
+                  })}>
                   <span className='caret-down cursor-pointer hover:after:animate-180'>SẢN PHẨM</span>
                 </Link>
                 <PopperCategory />
               </div>
 
-              <Link className='nav_text' to='/tin-tuc'>
+              <Link
+                to='/tin-tuc'
+                className={cn('nav_text', {
+                  'text-primaryLight': activeMenu === 'TIN TỨC'
+                })}>
                 TIN TỨC
               </Link>
-              <Link className='nav_text' to='/cua-hang'>
+              <Link
+                to='/cua-hang'
+                className={cn('nav_text', {
+                  'text-primaryLight': activeMenu === 'CỬA HÀNG'
+                })}>
                 CỬA HÀNG
               </Link>
-              <Link className='nav_text' to='/lien-he'>
+              <Link
+                to='/lien-he'
+                className={cn('nav_text', {
+                  'text-primaryLight': activeMenu === 'LIÊN HỆ'
+                })}>
                 LIÊN HỆ
               </Link>
             </div>
           </div>
           {/* nav icon */}
-          <div className='col-span-2 flex justify-between items-center lg:justify-center height-search'>
+          <div className='col-span-2 flex  items-center justify-center height-search'>
             <span className='lg:hidden'>
               <CategoryIcon />
             </span>
@@ -73,13 +101,13 @@ function Header() {
                   <AdminIcon />
                 </div>
                 <div
-                  className='nav_Admin-before hover-output p-2 text-[0.9rem] min-w-[130px] rounded text-black
-                  top-[113%] right-[2px] shadow-md bg-white font-semibold smooth'>
-
+                  className='nav_Admin-before hover-output p-2 text-[0.9rem] min-w-[180px] rounded text-black
+                  top-[113%] right-[2px] shadow-md bg-white font-semibold smooth '>
+                  <span className='absolute top-[-10px] left-0 right-0 bg-black h-4 bg-transparent'></span>
                   {isAuthenticated ? (
                     <div className='w-full p-[5px_8px] block hover:text-primary text-base transition whitespace-nowrap'>
                       <div className='flex items-center gap-2'>
-                        <img src={user.img}></img>
+                        <img className='h-6 w-6 rounded-[50%]' src={user.img} alt=' '></img>
                         <span>{user.username}</span>
                       </div>
                     </div>
@@ -97,18 +125,25 @@ function Header() {
                       </Link>
                     </div>
                   )}
-                  <Link
-                    to='/login-admin'
-                    className='hover:text-primary w-full block text-base p-[5px_8px] transition'>
-                    Quản trị
-                  </Link>
                   {isAuthenticated ? (
-                    <a
-                      href='/'
-                      onClick={handleoutAccount}
-                      className='hover:text-primary w-full block text-base p-[5px_8px] transition'>
-                      Đăng xuất
-                    </a>
+                    <>
+                      <Link
+                        to='/tinh-trang-don-hang'
+                        className='hover:text-primary w-full block text-base p-[5px_8px] transition'>
+                        Tình trạng đơn hàng
+                      </Link>
+                      <Link
+                        to='/admin/nguoi-dung'
+                        className='hover:text-primary w-full block text-base p-[5px_8px] transition'>
+                        Quản trị
+                      </Link>
+                      <a
+                        href='/'
+                        onClick={handleoutAccount}
+                        className='hover:text-primary w-full block text-base p-[5px_8px] transition'>
+                        Đăng xuất
+                      </a>
+                    </>
                   ) : null}
                 </div>
               </div>

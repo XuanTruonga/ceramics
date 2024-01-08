@@ -1,10 +1,15 @@
 import { ThemeContext } from 'UseContext/UseContext';
 import React, { useContext } from 'react';
 
-const SelectAddress = ({ title, data = [], setValue, type = '', name, children }) => {
+const SelectAddress = ({ title, data = [], setIdDistrict, setIdProvice, type = '', name, children }) => {
   const handleValue = (e) => {
-    if (type) {
-      setValue(e.target.value);
+    const dataProvice = data.filter((item) => item.province_name === e.target.value);
+    const dataDistrict = data.filter((item) => item.district_name === e.target.value);
+    if (type === 'provices') {
+      setIdProvice(dataProvice[0].province_id);
+    }
+    if (type === 'district') {
+      setIdDistrict(dataDistrict[0].district_id);
     }
   };
   const theme = useContext(ThemeContext);
@@ -20,7 +25,11 @@ const SelectAddress = ({ title, data = [], setValue, type = '', name, children }
           return (
             <option
               value={
-                type === 'district' ? item.district_id : type === 'provices' ? item.province_id : item.ward_name
+                type === 'district'
+                  ? item.district_name
+                  : type === 'provices'
+                    ? item.province_name
+                    : item.ward_name
               }
               key={index}>
               {item.province_name || item.district_name || item.ward_name}

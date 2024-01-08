@@ -1,36 +1,39 @@
 import CategoryItem from 'components/Category/CategoryItem';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import { useEffect, useState } from 'react';
-import { apiGetCategorys } from 'Services/apiCategory';
+import { useContext } from 'react';
+import { CategoryContext } from 'UseContext/CategoryContext';
+import { useNavigate } from 'react-router-dom';
+import { ProductContext } from 'UseContext/ProductContext';
 
 function CategoryImgs() {
-  const [categoryItems,setCategoryItems] = useState([])
-  console.log(categoryItems)
- useEffect(()=>{
-  const apiCate = async()=>{
-    const result = await apiGetCategorys()
-    // setCategoryItems(result)
-  }
-  apiCate()
- },[])
- 
+  const { categories } = useContext(CategoryContext);
+  const navigate = useNavigate();
+  const { setFilters, filters, setCateActive } = useContext(ProductContext);
+
+  const handleFillterCategory = (cate) => {
+    setCateActive(cate.category_name);
+    setFilters({ ...filters, category: cate?._id });
+    navigate('/san-pham');
+  };
+
   return (
     <div className='my-10 w-[1180px] m-auto text-center'>
       <div className=''>
         <div className='my-10 w-1180'>
           <Swiper spaceBetween={40} slidesPerView={6}>
-            {categoryItems.map((item, index) => {
-              return (
-                <SwiperSlide key={index}>
-                  <div>
-                    <CategoryItem data={item}>
-                      <div className='text-primaryLight text-xs'>sản phẩm...</div>
-                    </CategoryItem>
-                  </div>
-                </SwiperSlide>
-              );
-            })}
+            {categories &&
+              categories.map((item) => {
+                return (
+                  <SwiperSlide key={item._id}>
+                    <div>
+                      <CategoryItem data={item} onClick={() => handleFillterCategory(item)}>
+                        <div className='text-primaryLight text-xs'>sản phẩm...</div>
+                      </CategoryItem>
+                    </div>
+                  </SwiperSlide>
+                );
+              })}
           </Swiper>
         </div>
       </div>

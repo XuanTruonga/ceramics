@@ -45,7 +45,7 @@ const SelectAddressPay = () => {
           theme={theme}
           title='Chọn tỉnh/Thành phố'
           data={provices}
-          setValue={setProviceId}
+          setIdProvice={setProviceId}
           type='provices'
           name='provices'
         />
@@ -57,7 +57,7 @@ const SelectAddressPay = () => {
           theme={theme}
           title='Chọn quận/huyện'
           data={district}
-          setValue={setDistrictId}
+          setIdDistrict={setDistrictId}
           type='district'
           name='district'
         />

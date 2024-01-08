@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PaginationAdmin from '../paginationAdmin';
 import TableOrderAdmin from './TableOrderAdmin';
-import { apiGetOrder } from 'Services/apiOrder';
+import { apiGetBill } from 'Services/apiOrder';
 
 const AdminOrder = () => {
   const [apiOder, setApiOder] = useState([]);
@@ -10,8 +10,8 @@ const AdminOrder = () => {
 
   useEffect(() => {
     const apiOder = async () => {
-      const result = await apiGetOrder();
-      setApiOder(result);
+      const result = await apiGetBill();
+      setApiOder(result.data);
     };
     apiOder();
   }, [valueForm]);

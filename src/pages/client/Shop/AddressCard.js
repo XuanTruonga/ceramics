@@ -8,7 +8,13 @@ function AddressCard({ data, cityName, setCityName }) {
       className='p-[5px_10px] rounded-[10px] border-[2px] border-primary font-medium leading-6 text-sm cursor-pointer
     hover:bg-primary hover:!text-white group transition'
       style={data.provinces === cityName ? style : {}}
-      onClick={() => setCityName(data.provinces)}>
+      onClick={() => {
+        setCityName(data.provinces);
+        window.scroll({
+          behavior: 'smooth',
+          top: '400'
+        });
+      }}>
       <span
         className='text-primary font-bold block group-hover:text-white'
         style={data.provinces === cityName ? style : {}}>

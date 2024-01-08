@@ -1,48 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import HeaderAdmin from '../HeaderAdmin';
 import TableCateAdmin from './TableCateAdmin';
-import { toast } from 'react-toastify';
 import PaginationAdmin from '../paginationAdmin';
-import { apiGetCategorys, apiPostCategorys, apiCategorys } from 'Services/apiCategory';
+import { apiGetCategorys } from 'Services/apiCategory';
 
 const AdminCategorys = () => {
   const [apiCates, setApiCates] = useState([]);
   const [toggleModal, setToggleModal] = useState(false);
-  const [valueForm, setValueForm] = useState({});
-
+  const [callApiCate, setCallApiCate] = useState({});
   useEffect(() => {
     const apiCate = async () => {
-      const result = await apiGetCategorys();
-      setApiCates(result);
+      try {
+        const result = await apiGetCategorys({limit:10});
+        setApiCates(result);
+      } catch (error) {}
     };
     apiCate();
-  }, [valueForm]);
-
-  const onSubmitCate = (value) => {
-    toast.success('Thêm danh mục thành công!', {
-      position: toast.POSITION.TOP_RIGHT
-    });
-    setValueForm(value);
-    if (valueForm) {
-      const apiCate = async () => {
-        await apiUpdateCategorys(value);
-        setToggleModal(false);
-      };
-      apiCate();
-    }
-  };
+  }, [callApiCate]);
 
   return (
     <div className=''>
-      <HeaderAdmin setToggleModal={setToggleModal} title='Thêm danh mục'/>
+      <HeaderAdmin setToggleModal={setToggleModal} title='Thêm danh mục' />
       <TableCateAdmin
-        apiCates={apiCates}
+        apiCates={apiCates.data}
         toggleModal={toggleModal}
         setToggleModal={setToggleModal}
-        onSubmitCate={onSubmitCate}
-        setValueForm={setValueForm}
+        setCallApiCate={setCallApiCate}
       />
-      <PaginationAdmin/>
+      <PaginationAdmin />
     </div>
   );
 };

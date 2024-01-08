@@ -3,7 +3,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { apiPostProducts } from 'Services/apiProduct';
 import InputField from 'components/Form/InputField/InputField';
-import TextareaField from 'components/Form/TextareaField/TextareaField';
+import InputEditor from 'components/InputEditor/InputEditor';
 import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -17,8 +17,10 @@ const ModalAddProduct = ({ toggleModal, setToggleModal, setValueForm }) => {
     priceRoot: yup.string().matches(/^\d+$/, 'trường này phải là số').trim(),
     quantity: yup.string().matches(/^\d+$/, 'trường này phải là số').trim(),
     discount: yup.string().matches(/^\d+$/, 'trường này phải là số').trim(),
-    description: yup.string().required('Vui lòng không để trống'),
-    img:yup.string().required('vui lòng không để trống')
+    description: yup.string().required('Vui lòng không để trống').trim(),
+    category_id: yup.string().required('vui lòng không để trống').trim(),
+
+    img: yup.string().required('vui lòng không để trống').trim()
   });
   const { handleSubmit, control, reset, setFocus } = useForm({
     resolver: yupResolver(schema)
@@ -51,14 +53,14 @@ const ModalAddProduct = ({ toggleModal, setToggleModal, setValueForm }) => {
   return (
     <div>
       {toggleModal && (
-        <div className='overflow' onClick={handleToggleModal}>
+        <div className='overflow' onMouseDown={handleToggleModal}>
           <div
             ref={modalInner}
-            className='fixed top-[50%] left-[50%] w-[800px] min-h-[400px] bg-white transform: translate-x-[-50%]
+            className='fixed top-[50%] left-[50%] w-[90vw] h-[90vh] bg-white transform: translate-x-[-50%]
          transform: translate-y-[-50%] p-[20px_50px] rounded'>
             <form onSubmit={handleSubmit(onSubmitProduct)}>
               <div className='flex gap-5'>
-                <div className='w-[40%]'>
+                <div className='w-[30%]'>
                   <label className='text-sm font-medium mb-2 block'>
                     Tên sản phẩm:
                     <InputField
@@ -96,22 +98,38 @@ const ModalAddProduct = ({ toggleModal, setToggleModal, setValueForm }) => {
                     />
                   </label>
                   <label className='text-sm font-medium mb-2 block'>
-                    Link ảnh danh mục mới:
-                    <InputField className='border w-full rounded p-[8px_12px]' name='img' control={control} />
+                    Link ảnh sản phẩm mới:
+                    <InputField
+                      className='border w-full rounded p-[8px_12px]'
+                      placeholder='Link danh mục'
+                      name='img'
+                      control={control}
+                    />
+                  </label>
+                  <label className='text-sm font-medium mb-2 block'>
+                    Loại danh mục(id_category):
+                    <InputField
+                      placeholder='Loại danh mục'
+                      className='border w-full rounded p-[8px_12px]'
+                      name='category_id'
+                      control={control}
+                    />
                   </label>
                 </div>
-                <label className='flex-1'>
-                  Sự miêu tả:
-                  <TextareaField
+                <div className='flex-1'>
+                  <label className='flex-1'>Sự miêu tả:</label>
+                  <InputEditor
                     rows='16'
                     control={control}
                     name='description'
                     className='border w-full rounded p-[8px_12px]'
                   />
-                </label>
+                </div>
               </div>
               {error && <span className='text-red text-xs mb-1 inline-block'>{error}</span>}
-              <button className='button-add-product w-full'>Thêm sản phẩm</button>
+              <button className='button-add-product w-[50%] left-[50%] translate-x-[-50%] absolute bottom-4 '>
+                Thêm sản phẩm
+              </button>
             </form>
           </div>
         </div>

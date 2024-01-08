@@ -45,7 +45,7 @@ const ModalAddUser = ({ toggleModal, setToggleModal,errorMessage, onSubmitUser, 
   return (
     <div>
       {toggleModal && (
-        <div className='overflow' onClick={handleToggleModal}>
+        <div className='overflow' onMouseDown={handleToggleModal}>
           <div
             ref={modalInner}
             className='fixed top-[50%] left-[50%] w-[400px] min-h-[450px] bg-white transform: translate-x-[-50%]

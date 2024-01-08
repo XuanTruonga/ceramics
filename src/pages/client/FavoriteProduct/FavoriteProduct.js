@@ -11,7 +11,7 @@ function FavoriteProduct() {
             <div className='grid grid-cols-4 gap-4 '>
                {configHeart.map((item,index)=>{
                   return(
-                     <ProductItem data={item} key={item.id} index={index}/>
+                     <ProductItem data={item} key={index} index={index}/>
                   )
                })}
             </div>

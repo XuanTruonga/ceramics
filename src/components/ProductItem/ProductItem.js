@@ -11,6 +11,7 @@ import { HandleAddCart, HandleAddProductLike } from './HandleCart';
 import { ThemeContext } from 'App';
 import 'react-toastify/dist/ReactToastify.css';
 import { localStorageHeartProducts } from 'components/localStorage/localStorage';
+import { ProductContext } from 'UseContext/ProductContext';
 
 /* eslint-disable jsx-a11y/alt-text */
 
@@ -18,7 +19,9 @@ function ProductItem({ classImg = 'bg-pinkLight', data = {}, index }) {
   const [toogleModeProduct, setToogleModeProduct] = useState(false);
   const [toogleModeAddCart, setToogleModeAddCart] = useState(false);
   const [productItemModal, setProductItemModal] = useState({});
+  const productContext = useContext(ProductContext)
 
+  const {showDetailProduct} = productContext
   const price = data.priceRoot - (data.priceRoot / 100) * data.discount;
   const setRenderApp = useContext(ThemeContext);
   const configHeart = localStorageHeartProducts();
@@ -37,10 +40,10 @@ function ProductItem({ classImg = 'bg-pinkLight', data = {}, index }) {
       <div className=' relative'>
         {/* img */}
         <div className='hover-input'>
-          <Link to='/san-pham'>
+          <Link to={'/san-pham/'+ data.name} onClick={()=>showDetailProduct(data)}>
             <div className='w-[100%] relative overflow-hidden rounded-lg'>
               <div className='pt-[100%] smooth-zoom'>
-                <img className={`absolute top-0 left-0 bottom-0 right-0 w-full h-full object-contain ${classImg}`} src={data.img}></img>
+                <img className={`absolute top-0 left-0 bottom-0 right-0 w-full h-full object-contain ${classImg}`} src={data?.img} ></img>
               </div>
             </div>
 

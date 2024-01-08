@@ -1,6 +1,6 @@
 import CategoryItem from 'components/Category/CategoryItem';
 import { NextIcon } from 'components/Icon/Icon';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { SwiperSlide, Swiper } from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
@@ -8,18 +8,20 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-import { useEffect, useState } from 'react';
-import { apiGetCategorys } from 'Services/apiCategory';
+import { useContext } from 'react';
+import { ProductContext } from 'UseContext/ProductContext';
+import { CategoryContext } from 'UseContext/CategoryContext';
 
 function CategorySlide({ title = 'GỐM SỨ' }) {
-  const [categoryItems, setCategoryItems] = useState([]);
-  useEffect(() => {
-    const apiCate = async () => {
-      const result = await apiGetCategorys();
-      setCategoryItems(result);
-    };
-    apiCate();
-  }, []);
+  const navigate = useNavigate();
+  const {categories} = useContext(CategoryContext)
+  const { setFilters, filters, setCateActive } = useContext(ProductContext);
+  
+  const handleFillterCategory = (cate) => {
+    setCateActive(cate.category_name);
+    setFilters({ ...filters, category: cate?._id });
+    navigate('/san-pham')
+  };
 
   return (
     <div
@@ -51,13 +53,14 @@ function CategorySlide({ title = 'GỐM SỨ' }) {
               slidesPerView={4}
               navigation
               pagination={{ clickable: true }}>
-              {categoryItems.length > 0 && categoryItems.map((item, index) => {
-                return (
-                  <SwiperSlide className='!flex justify-center' key={item.img}>
-                    <CategoryItem data={item} />
-                  </SwiperSlide>
-                );
-              })}
+              {categories &&
+                categories.map((item, index) => {
+                  return (
+                    <SwiperSlide className='!flex justify-center' key={item.img}>
+                      <CategoryItem data={item} onClick={()=>handleFillterCategory(item)}/>
+                    </SwiperSlide>
+                  );
+                })}
             </Swiper>
           </div>
         </div>

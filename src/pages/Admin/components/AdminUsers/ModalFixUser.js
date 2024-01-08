@@ -39,7 +39,6 @@ const ModalFixUser = ({ toggleModal, setToggleModal, itemFixUser, setCallApiUser
     }
   };
   const onSubmitUser = async (value) => {
-    console.log(value);
     try {
       await apiUpdateUsers(itemFixUser._id, value);
       setCallApiUser(value);
@@ -54,7 +53,7 @@ const ModalFixUser = ({ toggleModal, setToggleModal, itemFixUser, setCallApiUser
   return (
     <div>
       {toggleModal && (
-        <div className='overflow' onClick={handleToggleModal}>
+        <div className='overflow' onMouseDown={handleToggleModal}>
           <div
             ref={modalInner}
             className='fixed top-[50%] left-[50%] w-[450px] min-h-[300px] bg-white transform: translate-x-[-50%]

@@ -6,9 +6,10 @@ const dataUser = JSON.parse(localStorage.getItem('token')) || {};
 export const baseEndpoint = {
   categorys: '/category',
   product: '/product',
-  orders: '/orders',
+  bill: '/bill',
   users: '/users',
-  accountAdmin: '/accountAdmin'
+  accountAdmin: '/accountAdmin',
+  news: '/news'
 };
 
 export const axiosInstance = axios.create({

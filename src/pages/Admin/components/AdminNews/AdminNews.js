@@ -3,46 +3,48 @@ import HeaderAdmin from '../HeaderAdmin';
 import { toast } from 'react-toastify';
 import PaginationAdmin from '../paginationAdmin';
 import TableAdminNews from './TableAdminNews';
-import { apiGetCategorys, apiPostCategorys } from 'Services/apiCategory';
+import { apiAddNews, apiGetNews } from 'Services/apiNews';
 
 const AdminNews = () => {
-  const [apiCates, setApiCates] = useState([]);
+  const [apiNews, setApiNews] = useState([]);
   const [toggleModal, setToggleModal] = useState(false);
-  const [valueForm, setValueForm] = useState({});
+  const [callApi, setCallApi] = useState({});
 
   useEffect(() => {
     const apiCate = async () => {
-      const result = await apiGetCategorys();
-      setApiCates(result);
+      try {
+        const result = await apiGetNews();
+        setApiNews(result?.data?.data);
+      } catch (error) {}
     };
     apiCate();
-  }, [valueForm]);
+  }, [callApi]);
 
-  const onSubmitCate = (value) => {
-    toast.success('Thêm danh mục thành công!', {
-      position: toast.POSITION.TOP_RIGHT
-    });
-    setValueForm(value);
-    if (valueForm) {
-      const apiCate = async () => {
-        await apiPostCategorys(value);
-        setToggleModal(false);
-      };
-      apiCate();
+  const onSubmitNews = async (value) => {
+    try {
+      await apiAddNews(value);
+      toast.success('Thêm tin tức thành công!', {
+        position: toast.POSITION.TOP_RIGHT
+      });
+      setCallApi(value);
+    } catch (error) {
+      toast.error('Thêm tin tức thất bại!', {
+        position: toast.POSITION.TOP_RIGHT
+      });
     }
   };
 
   return (
     <div className=''>
-      <HeaderAdmin setToggleModal={setToggleModal} title='Thêm danh mục'/>
+      <HeaderAdmin setToggleModal={setToggleModal} title='Thêm tin tức' />
       <TableAdminNews
-        apiCates={apiCates}
+        apiNews={apiNews}
         toggleModal={toggleModal}
         setToggleModal={setToggleModal}
-        onSubmitCate={onSubmitCate}
-        setValueForm={setValueForm}
+        onSubmitNews={onSubmitNews}
+        setCallApi={setCallApi}
       />
-      <PaginationAdmin/>
+      <PaginationAdmin />
     </div>
   );
 };

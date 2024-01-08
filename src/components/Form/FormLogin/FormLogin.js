@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { apiLoginUsers } from 'Services/apiUser';
 import { useContext } from 'react';
 import { AuthContext } from 'UseContext/AuthContext';
+import { toast } from 'react-toastify';
 
 function FormLogin() {
   const [viewPassword, setViewPassword] = useState(true);
@@ -22,7 +23,6 @@ function FormLogin() {
   const { handleSubmit, control, setValue } = useForm({
     resolver: yupResolver(schema)
   });
-  console.log(authContext);
 
   const onSubmit = (value) => {
     const post = {
@@ -35,6 +35,9 @@ function FormLogin() {
           const res = await apiLoginUsers(post);
           authContext.login(res.data);
           navigate('/');
+          toast.success('Đăng nhập thành công!', {
+            position: toast.POSITION.TOP_RIGHT
+          });
         } catch (error) {
           setAccount(true);
           setValue('username', '');

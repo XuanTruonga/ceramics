@@ -2,6 +2,7 @@ import { AdminIcon } from 'components/Icon/Icon';
 import SelectAddressPay from 'components/SelectAddressPay/SelectAddressPay';
 import { Link } from 'react-router-dom';
 import InputField from '../InputField/InputField';
+import TextareaField from '../TextareaField/TextareaField';
 
 function FormInfoReceive(props) {
   const { control } = props;
@@ -57,12 +58,15 @@ function FormInfoReceive(props) {
           />
         </div>
 
-        <SelectAddressPay control={control}/>
+        <SelectAddressPay control={control} />
 
-        <textarea
+        <TextareaField
           className='w-full p-[8px_12px] outline-none focus:border-blue focus:border-[2px]1rounded-md overflow-hidden
                     font-medium  h-full border-[1px] border-[#ccc]'
-          placeholder='Nội dung (Tùy chọn)'></textarea>
+          placeholder='Nội dung (Tùy chọn)'
+          name='note'
+          control={control}>
+          </TextareaField>
       </div>
     </div>
   );

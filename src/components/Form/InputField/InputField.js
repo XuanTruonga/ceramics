@@ -7,7 +7,6 @@ const InputField = (props) => {
     <div>
       <Controller
         render={({ field, fieldState: { error } }) => {
-          // console.log(field)  
           return (
             <div>
               <input placeholder={placeholder} className={className} type={type} {...field} />

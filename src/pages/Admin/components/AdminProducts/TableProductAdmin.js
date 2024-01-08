@@ -13,7 +13,7 @@ const TableProductAdmin = ({ apiProduct = [], toggleModal, setToggleModal, setVa
     try {
       await apiRemoveProducts(item._id);
       setValueForm(item);
-      toast.error('Xóa danh mục thành công!', {
+      toast.success('Xóa danh mục thành công!', {
         position: toast.POSITION.TOP_RIGHT
       });
     } catch (error) {

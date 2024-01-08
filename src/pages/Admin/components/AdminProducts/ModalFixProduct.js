@@ -7,7 +7,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
-import TextareaField from 'components/Form/TextareaField/TextareaField';
+import InputEditor from 'components/InputEditor/InputEditor';
 
 const ModalFixProduct = ({ toggleModal, setToggleModal, itemFixProduct, setValueForm }) => {
   const [error, setError] = useState();
@@ -16,12 +16,10 @@ const ModalFixProduct = ({ toggleModal, setToggleModal, itemFixProduct, setValue
     name: yup.string().min(5, 'tối thiểu 5 ký tự').trim(),
     priceRoot: yup.string().matches(/^\d+$/, 'trường này phải là số').trim(),
     quantity: yup.string().matches(/^\d+$/, 'trường này phải là số').trim(),
-    description: yup.string().required('Vui lòng không để trống'),
-    discount: yup
-      .string()
-      .matches(/\b([0-9]|[1-9][0-9]|100)\b/, 'trường này phải là số lớn hơn 0 và nhỏ hơn 100')
-      .trim(),
-    img:yup.string().required('vui lòng không để trống')
+    description: yup.string().required('Vui lòng không để trống').trim(),
+    category_id: yup.string().required('vui lòng không để trống').trim(),
+    img: yup.string().required('vui lòng không để trống').trim()
+    // discount: yup.trim(),
   });
 
   const { handleSubmit, control, setValue, reset, setFocus } = useForm({
@@ -33,6 +31,8 @@ const ModalFixProduct = ({ toggleModal, setToggleModal, itemFixProduct, setValue
     setValue('priceRoot', itemFixProduct.priceRoot);
     setValue('quantity', itemFixProduct.quantity);
     setValue('discount', itemFixProduct.discount);
+    setValue('description', itemFixProduct.description);
+    setValue('img', itemFixProduct.img);
   }, [toggleModal]);
 
   useEffect(() => {
@@ -61,14 +61,14 @@ const ModalFixProduct = ({ toggleModal, setToggleModal, itemFixProduct, setValue
   return (
     <div>
       {toggleModal && (
-        <div className='overflow' onClick={handleToggleModal}>
+        <div className='overflow' onMouseDown={handleToggleModal}>
           <div
             ref={modalInner}
-            className='fixed top-[50%] left-[50%] w-[800px] min-h-[400px] bg-white transform: translate-x-[-50%]
+            className='fixed top-[50%] left-[50%] w-[90vw] h-[90vh] bg-white transform: translate-x-[-50%]
          transform: translate-y-[-50%] p-[20px_50px] rounded'>
             <form onSubmit={handleSubmit(onSubmitProduct)}>
               <div className='flex gap-5'>
-                <div className='w-[40%]'>
+                <div className='w-[80%]'>
                   <label className='text-sm font-medium mb-2 block'>
                     Tên sản phẩm mới:
                     <InputField
@@ -107,28 +107,35 @@ const ModalFixProduct = ({ toggleModal, setToggleModal, itemFixProduct, setValue
                   </label>
                   <label className='text-sm font-medium mb-2 block'>
                     Link ảnh danh mục mới:
-                    <InputField className='border w-full rounded p-[8px_12px]' name='img' control={control} />
+                    <InputField
+                      className='border w-full rounded p-[8px_12px]'
+                      name='img'
+                      placeholder='Link danh mục'
+                      control={control}
+                    />
                   </label>
-                  {/* <div className='flex_center'>
-                    <div className='w-full h-[200px] mb-3 border  rounded overflow-hidden'>
-                      <img
-                        className='object-contain w-full h-full'
-                        src={watch('img') && URL.createObjectURL(watch('img'))}></img>
-                    </div>
-                  </div> */}
+                  <label className='text-sm font-medium mb-2 block'>
+                    Loại danh mục(id_category):
+                    <InputField
+                      className='border w-full rounded p-[8px_12px]'
+                      name='category_id'
+                      control={control}
+                      placeholder='Loại danh mục'
+                    />
+                  </label>
                 </div>
-                <label className='flex-1'>
-                  Sự miêu tả:
-                  <TextareaField
+                <div>
+                  <label className='flex-1'>Sự miêu tả:</label>
+                  <InputEditor
                     rows='16'
                     control={control}
                     name='description'
                     className='border w-full rounded p-[8px_12px]'
                   />
-                </label>
+                </div>
               </div>
               {error && <span className='text-red text-xs mb-1 inline-block'>{error}</span>}
-              <button className='button-add-product w-full'>Cập nhập</button>
+              <button className='button-add-product w-[50%] left-[50%] translate-x-[-50%] absolute bottom-4 '>Cập nhập</button>
             </form>
           </div>
         </div>
